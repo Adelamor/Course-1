@@ -14,8 +14,14 @@ public class Platform : MonoBehaviour
     public PlayformType PlayformType;
     public Rigidbody2D Rigidbody2D;
     public TextMeshProUGUI TextMeshProUGUI;
-    public int Scores = 0;
+
+    [Range(0,1)]
+    public float SpeedKof = 1;
+    
     private Ball m_Ball;
+    private Vector2 m_TargetPosition;
+
+    public int Scores = 0;
 
     private void Start()
     {
@@ -26,18 +32,14 @@ public class Platform : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if(PlayformType == PlayformType.Enemy)
-        {
-            var ballPosition = m_Ball.transform.position;
-            Rigidbody2D.MovePosition(ballPosition);
-            Debug.Log("Enemy");
-        }
-        else if (PlayformType == PlayformType.Player)
-        {
-            var worldMousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
-            Rigidbody2D.MovePosition(worldMousePosition);
-            Debug.Log("Player");
-        }
+        var targetPosition = new Vector3();
+
+        if(PlayformType == PlayformType.Enemy) targetPosition = m_Ball.transform.position;    
+        else if (PlayformType == PlayformType.Player) targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition); 
+        Debug.Log($"{gameObject.name} {m_TargetPosition} {targetPosition} {SpeedKof}");
+        m_TargetPosition = Vector3.Lerp(m_TargetPosition, targetPosition, SpeedKof);
+        Debug.Log($"time {Time.deltaTime}");
+        Rigidbody2D.MovePosition(m_TargetPosition);
     }
     private void OnCollisionEnter2D(Collision2D other) 
     {
