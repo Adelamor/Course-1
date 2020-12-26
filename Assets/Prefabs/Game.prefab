@@ -790,7 +790,7 @@ PrefabInstance:
     - target: {fileID: 2385457468788958660, guid: 0df543d00a780cb4381402434e856c85,
         type: 3}
       propertyPath: SpeedKof
-      value: 0.129
+      value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 2385457468788958660, guid: 0df543d00a780cb4381402434e856c85,
         type: 3}
