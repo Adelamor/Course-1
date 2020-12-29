@@ -22,6 +22,7 @@ public class App : MonoBehaviour
     }
     
     public TextMeshProUGUI[] ScoreTexts;
+    public TextMeshProUGUI TotalScoreText;
     public GameObject GamePrefab;
 
     [Space]
@@ -32,10 +33,13 @@ public class App : MonoBehaviour
     private Ball m_Ball;
     private int m_Scores;
 
+    public int TotalScores {get {return PlayerPrefs.GetInt("TotalScores", 0);} set {PlayerPrefs.SetInt("TotalScores", value);}}
+
     private void Start()
     {
         Application.targetFrameRate = 60;
-        SwitchUI(ScreenName.Menu);
+        GoToMenu();
+        //SwitchUI(ScreenName.Menu);        
     }
 
     public void StartGame()
@@ -53,12 +57,15 @@ public class App : MonoBehaviour
 
         m_Ball.OnTouchUpper += () => ChangeScores(1); 
         m_Ball.OnTouchBottom += () => ChangeScores(-1);
-        SwitchUI(ScreenName.Game);        
+        SwitchUI(ScreenName.Game);
+        AudioManager.Instance.PlaySoundByName("Click");        
     }
     public void GoToMenu()
     {
         if(m_Game !=null) Destroy(m_Game);
         SwitchUI(ScreenName.Menu);
+        AudioManager.Instance.PlaySoundByName("Click");
+        TotalScoreText.text = "Total Scores:" + TotalScores.ToString();
     }
 
     public void GameLose()
@@ -84,6 +91,7 @@ public class App : MonoBehaviour
 
     private void ChangeScores (int value)
     {
+        TotalScores += value;
         m_Scores += value;
         if (m_Scores <= 0) 
         {

@@ -34,15 +34,18 @@ public class Ball : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) 
     {
+        AudioManager.Instance.PlaySoundByName("Hit");
         if (other.gameObject.gameObject.name == "Bottom")
         {
             if (OnTouchBottom !=null) OnTouchBottom();
             Restart();
+            AudioManager.Instance.PlaySoundByName("Lose");
         }        
         if (other.gameObject.gameObject.name == "Upper")
         {
             if (OnTouchBottom !=null) OnTouchUpper();
             Restart();
+            AudioManager.Instance.PlaySoundByName("Score");
         }
     }
 }
